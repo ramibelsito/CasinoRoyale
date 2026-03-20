@@ -1,0 +1,34 @@
+<script>
+const ws = new WebSocket("ws://" + location.host + "/ws");
+
+ws.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+
+    const table = document.getElementById("tabla");
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>${data.timestamp}</td>
+        <td>${data.endpoint}</td>
+        <td>${data.tipo_evento}</td>
+        <td>${data.detalle}</td>
+        <td>${data.cliente_ip}</td>
+    `;
+
+    table.prepend(row);
+};
+</script>
+
+<table>
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Endpoint</th>
+            <th>Tipo</th>
+            <th>Detalle</th>
+            <th>IP</th>
+        </tr>
+    </thead>
+    <tbody id="tabla"></tbody>
+</table>
