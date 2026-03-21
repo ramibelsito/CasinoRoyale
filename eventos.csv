@@ -12,3 +12,28 @@ timestamp,endpoint,tipo_evento,detalle,cliente_ip
 2026-03-21T13:59:52,/login,login,Usuario Ramiro Belsito logueado,127.0.0.1
 2026-03-21T14:00:35,/crupier/ingresar,ingreso_mesa,Usuario Ramiro Belsito ingreso a mesa 1 con 1000,127.0.0.1
 2026-03-21T14:00:52,/crupier/retirar,retiro_mesa,Usuario Ramiro Belsito retiro de mesa con 1500,127.0.0.1
+2026-03-21T16:03:43,/registro,registro,Usuario Luca Botinelli registrado con ID 2,127.0.0.1
+2026-03-21T16:03:51,/login,login,Usuario Luca Botinelli logueado,127.0.0.1
+2026-03-21T16:04:28,/crupier/ingresar,ingreso_mesa,Usuario Luca Botinelli ingreso a mesa 1 con 200,127.0.0.1
+2026-03-21T16:05:04,/crupier/retirar,retiro_mesa,Usuario Luca Botinelli retiro de mesa con 250,127.0.0.1
+2026-03-21T16:08:28,/crupier/ingresar,ingreso_mesa,Usuario Luca Botinelli ingreso a mesa 2 con 200,127.0.0.1
+2026-03-21T16:09:02,/crupier/retirar,retiro_mesa,Usuario Luca Botinelli retiro de mesa con 250,127.0.0.1
+2026-03-21T16:09:04,/crupier/ingresar,ingreso_mesa,Usuario Luca Botinelli ingreso a mesa 3 con 200,127.0.0.1
+2026-03-21T16:09:09,/crupier/retirar,retiro_mesa,Usuario Luca Botinelli retiro de mesa con 250,127.0.0.1
+2026-03-21T16:12:59,/login,login,Usuario Ramiro Belsito logueado,127.0.0.1
+2026-03-21T16:23:27,/login,login,Usuario Ramiro Belsito logueado,127.0.0.1
+2026-03-21T16:33:04,/crupier/ingresar,ingreso_mesa,Usuario Ramiro Belsito ingreso a mesa 4 con 100,127.0.0.1
+2026-03-21T16:33:21,/login,login,Usuario Ramiro Belsito logueado,127.0.0.1
+2026-03-21T16:33:43,/crupier/retirar,retiro_mesa,Usuario Ramiro Belsito retiro de mesa con 150,127.0.0.1
+2026-03-21T16:38:35,/crupier/ingresar,ingreso_mesa,Usuario Ramiro Belsito ingreso a mesa 1 con 100,127.0.0.1
+2026-03-21T16:40:24,/crupier/transferir,transferencia,Transferencia de 204 a usuario Luca Botinelli,127.0.0.1
+2026-03-21T16:41:00,/crupier/transferir,transferencia,Transferencia de 10000 a usuario Luca Botinelli,127.0.0.1
+2026-03-21T16:44:29,/crupier/retirar,retiro_mesa,Usuario Ramiro Belsito retiro de mesa con 100,127.0.0.1
+2026-03-21T16:48:07,/registro,registro,Usuario Sofia Scravaglieri registrado con ID 3,127.0.0.1
+2026-03-21T16:48:15,/login,login,Usuario Sofia Scravaglieri logueado,127.0.0.1
+2026-03-21T16:48:37,/login,login,Usuario Ramiro Belsito logueado,127.0.0.1
+2026-03-21T16:49:21,/crupier/ingresar,ingreso_mesa,Usuario Sofia Scravaglieri ingreso a mesa 1 con 100,127.0.0.1
+2026-03-21T16:49:38,/crupier/retirar,retiro_mesa,Usuario Sofia Scravaglieri retiro de mesa con 1500,127.0.0.1
+2026-03-21T16:50:02,/login,login,Usuario Sofia Scravaglieri logueado,127.0.0.1
+2026-03-21T16:50:21,/crupier/transferir,transferencia,Transferencia de 1000000000 a usuario Ramiro Belsito,127.0.0.1
+2026-03-21T16:50:36,/login,login,Usuario Ramiro Belsito logueado,127.0.0.1

@@ -1,11 +1,12 @@
-from fastapi import FastAPI, WebSocket, Request, HTTPException
-from fastapi.responses import HTMLResponse, FileResponse
+from fastapi import FastAPI, WebSocket, Request, HTTPException, Cookie
+from fastapi.responses import HTMLResponse, FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
-from typing import List
+from typing import List, Optional
 from datetime import datetime
 import csv
 import asyncio
 import json
+import secrets
 from models import User, Table, users, tables, next_user_id, next_table_id
 
 app = FastAPI()
@@ -14,6 +15,9 @@ CSV_FILE = "eventos.csv"
 USERS_FILE = "users.json"
 TABLES_FILE = "tables.json"
 csv_lock = asyncio.Lock()
+
+# Sesiones de crupier activas: {token: timestamp}
+crupier_sessions = {}
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -93,10 +97,29 @@ async def usuario_page():
 async def crupier_login_page():
     return FileResponse("static/crupier_login.html")
 
+@app.get("/crupier")
+async def crupier_page(crupier_token: Optional[str] = Cookie(None)):
+    if not crupier_token or crupier_token not in crupier_sessions:
+        return RedirectResponse(url="/crupier/login", status_code=303)
+    return FileResponse("static/crupier.html")
+
 @app.post("/crupier/login")
 async def crupier_login(body: dict):
     if body.get('password') == 'Crupier007':
-        return {"ok": True}
+        token = secrets.token_urlsafe(32)
+        crupier_sessions[token] = datetime.now().isoformat()
+        response = HTMLResponse(content="""
+        <html>
+        <head><title>Redirecting...</title></head>
+        <body>
+        <script>
+            window.location.href = '/crupier';
+        </script>
+        </body>
+        </html>
+        """)
+        response.set_cookie(key="crupier_token", value=token, max_age=3600)
+        return response
     raise HTTPException(status_code=401, detail="Contraseña incorrecta")
 
 @app.post("/registro")
@@ -211,9 +234,37 @@ async def crupier_retirar(request: Request, body: dict):
     )
     return {"ok": True}
 
+@app.post("/crupier/logout")
+async def crupier_logout(crupier_token: Optional[str] = Cookie(None)):
+    if crupier_token and crupier_token in crupier_sessions:
+        del crupier_sessions[crupier_token]
+    response = RedirectResponse(url="/crupier/login", status_code=303)
+    response.delete_cookie("crupier_token")
+    return response
+
 @app.get("/crupier/mesas")
 async def crupier_mesas():
     return list(tables.values())
+
+@app.post("/crupier/transferir")
+async def crupier_transferir(request: Request, body: dict):
+    dni = body['dni']
+    monto = body['monto']
+    
+    if dni not in users:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    user = users[dni]
+    user.caja += monto
+    save_data()
+    
+    await registrar_evento_ws(
+        "/crupier/transferir",
+        "transferencia",
+        f"Transferencia de {monto} a usuario {user.nombre} {user.apellido}",
+        request.client.host
+    )
+    return {"ok": True}
 
 @app.on_event("startup")
 async def startup_event():

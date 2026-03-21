@@ -16,15 +16,16 @@ Aplicación web para registrar acciones, ganancias y pérdidas de usuarios en un
 ## Funcionalidades
 
 ### Usuarios
-- Registrarse con nombre, apellido, DNI (caja inicial 1000)
+- Registrarse con nombre, apellido, DNI (caja inicial 2500, sin DNIs duplicados).
 - Login con DNI
-- Ver su caja actual
-- Ver leaderboard
+- Ver su caja actual y leaderboard (actualización automática en tiempo real)
 
 ### Crupiers
 - Ingresar jugador a mesa con monto (controla que tenga suficiente y no esté en otra mesa). El monto se descuenta de la caja del usuario.
 - Retirar jugador de mesa con monto (no permite negativo). El monto especificado se suma a la caja del usuario (puede ser 0 si pierde todo, o más si gana).
+- Transferencia directa: Agregar monto directamente a la caja de un usuario.
 - Ver estado de mesas (Poker, Blackjack, Ruleta, Slot Machine)
+- Acceso protegido con contraseña: "Crupier007"
 
 ### Backend
 - Gestión de cajas de usuarios (inicial 2500)

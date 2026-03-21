@@ -15,6 +15,9 @@
     </style>
 </head>
 <body>
+    <div style="text-align: right; padding: 10px;">
+        <button onclick="logout()" style="background: #dc3545;">Logout</button>
+    </div>
     <h1>Crupier Panel</h1>
     <div class="form-container">
         <h2>Ingresar Jugador a Mesa</h2>
@@ -34,7 +37,12 @@
         <input type="number" id="monto_retiro" placeholder="Monto">
         <button onclick="retirar()">Retirar</button>
     </div>
-    <h2>Estado de Mesas</h2>
+    <div class="form-container">
+        <h2>Transferencia Directa</h2>
+        <input type="text" id="dni_transfer" placeholder="DNI del Jugador">
+        <input type="number" id="monto_transfer" placeholder="Monto a Transferir">
+        <button onclick="transferir()">Transferir</button>
+    </div>
     <table>
         <thead>
             <tr>
@@ -45,26 +53,61 @@
         <tbody id="mesas"></tbody>
     </table>
     <script>
+        async function logout() {
+            await fetch('/crupier/logout', {method: 'POST'});
+            window.location.href = '/crupier/login';
+        }
         async function ingresar() {
             const dni = document.getElementById('dni_ingreso').value;
             const monto = parseFloat(document.getElementById('monto_ingreso').value);
             const mesa_id = parseInt(document.getElementById('mesa_ingreso').value);
-            await fetch('/crupier/ingresar', {
+            const response = await fetch('/crupier/ingresar', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({dni, monto, mesa_id})
             });
-            loadMesas();
+            if (response.ok) {
+                document.getElementById('dni_ingreso').value = '';
+                document.getElementById('monto_ingreso').value = '';
+                loadMesas();
+            } else {
+                const error = await response.text();
+                alert(error);
+            }
         }
         async function retirar() {
             const dni = document.getElementById('dni_retiro').value;
             const monto = parseFloat(document.getElementById('monto_retiro').value);
-            await fetch('/crupier/retirar', {
+            const response = await fetch('/crupier/retirar', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({dni, monto})
             });
-            loadMesas();
+            if (response.ok) {
+                document.getElementById('dni_retiro').value = '';
+                document.getElementById('monto_retiro').value = '';
+                loadMesas();
+            } else {
+                const error = await response.text();
+                alert(error);
+            }
+        }
+        async function transferir() {
+            const dni = document.getElementById('dni_transfer').value;
+            const monto = parseFloat(document.getElementById('monto_transfer').value);
+            const response = await fetch('/crupier/transferir', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({dni, monto})
+            });
+            if (response.ok) {
+                document.getElementById('dni_transfer').value = '';
+                document.getElementById('monto_transfer').value = '';
+                loadMesas();
+            } else {
+                const error = await response.text();
+                alert(error);
+            }
         }
         async function loadMesas() {
             const response = await fetch('/crupier/mesas');

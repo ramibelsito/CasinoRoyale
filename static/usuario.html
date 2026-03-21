@@ -46,6 +46,11 @@
             });
         }
         loadData();
+
+        const ws = new WebSocket("ws://" + location.host + "/ws");
+        ws.onmessage = function(event) {
+            loadData();
+        };
     </script>
 </body>
 </html>

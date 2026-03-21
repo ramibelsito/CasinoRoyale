@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Dict, List
+from typing import Dict, List, Optional
 from datetime import datetime
 
 class User(BaseModel):
@@ -9,7 +9,7 @@ class User(BaseModel):
     dni: str
     caja: float = 2500.0  # caja inicial
     en_mesa: bool = False
-    mesa_id: int = None
+    mesa_id: Optional[int] = None
 
 class Table(BaseModel):
     id: int
