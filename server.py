@@ -89,9 +89,15 @@ async def login_page():
 async def usuario_page():
     return FileResponse("static/usuario.html")
 
-@app.get("/crupier")
-async def crupier_page():
-    return FileResponse("static/crupier.html")
+@app.get("/crupier/login")
+async def crupier_login_page():
+    return FileResponse("static/crupier_login.html")
+
+@app.post("/crupier/login")
+async def crupier_login(body: dict):
+    if body.get('password') == 'Crupier007':
+        return {"ok": True}
+    raise HTTPException(status_code=401, detail="Contraseña incorrecta")
 
 @app.post("/registro")
 async def registro_submit(request: Request, body: dict):
