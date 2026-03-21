@@ -1,0 +1,14 @@
+timestamp,endpoint,tipo_evento,detalle,cliente_ip
+
+2026-03-21T13:53:29,/registro,registro,Usuario Ramiro Belsito registrado con ID 1,127.0.0.1
+2026-03-21T13:53:33,/login,login,Usuario Ramiro Belsito logueado,127.0.0.1
+2026-03-21T13:53:57,/crupier/ingresar,ingreso_mesa,Usuario Ramiro Belsito ingreso a mesa 1 con 100,127.0.0.1
+2026-03-21T13:54:12,/crupier/retirar,retiro_mesa,Usuario Ramiro Belsito retiro de mesa con 50,127.0.0.1
+2026-03-21T13:54:24,/login,login,Usuario Ramiro Belsito logueado,127.0.0.1
+2026-03-21T13:59:11,/registro,registro,Usuario Ramiro Belsito registrado con ID 1,127.0.0.1
+2026-03-21T13:59:17,/login,login,Usuario Ramiro Belsito logueado,127.0.0.1
+2026-03-21T13:59:31,/crupier/ingresar,ingreso_mesa,Usuario Ramiro Belsito ingreso a mesa 1 con 100,127.0.0.1
+2026-03-21T13:59:41,/crupier/retirar,retiro_mesa,Usuario Ramiro Belsito retiro de mesa con 50,127.0.0.1
+2026-03-21T13:59:52,/login,login,Usuario Ramiro Belsito logueado,127.0.0.1
+2026-03-21T14:00:35,/crupier/ingresar,ingreso_mesa,Usuario Ramiro Belsito ingreso a mesa 1 con 1000,127.0.0.1
+2026-03-21T14:00:52,/crupier/retirar,retiro_mesa,Usuario Ramiro Belsito retiro de mesa con 1500,127.0.0.1

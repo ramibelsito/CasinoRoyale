@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crupier - Casino Royale</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+        h1 { text-align: center; }
+        .form-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        input, select { padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #007bff; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Crupier Panel</h1>
+    <div class="form-container">
+        <h2>Ingresar Jugador a Mesa</h2>
+        <input type="text" id="dni_ingreso" placeholder="DNI del Jugador">
+        <input type="number" id="monto_ingreso" placeholder="Monto">
+        <select id="mesa_ingreso">
+            <option value="1">Poker</option>
+            <option value="2">Blackjack</option>
+            <option value="3">Ruleta</option>
+            <option value="4">Slot Machine</option>
+        </select>
+        <button onclick="ingresar()">Ingresar</button>
+    </div>
+    <div class="form-container">
+        <h2>Retirar Jugador de Mesa</h2>
+        <input type="text" id="dni_retiro" placeholder="DNI del Jugador">
+        <input type="number" id="monto_retiro" placeholder="Monto">
+        <button onclick="retirar()">Retirar</button>
+    </div>
+    <h2>Estado de Mesas</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Mesa</th>
+                <th>Jugadores</th>
+            </tr>
+        </thead>
+        <tbody id="mesas"></tbody>
+    </table>
+    <script>
+        async function ingresar() {
+            const dni = document.getElementById('dni_ingreso').value;
+            const monto = parseFloat(document.getElementById('monto_ingreso').value);
+            const mesa_id = parseInt(document.getElementById('mesa_ingreso').value);
+            await fetch('/crupier/ingresar', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({dni, monto, mesa_id})
+            });
+            loadMesas();
+        }
+        async function retirar() {
+            const dni = document.getElementById('dni_retiro').value;
+            const monto = parseFloat(document.getElementById('monto_retiro').value);
+            await fetch('/crupier/retirar', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({dni, monto})
+            });
+            loadMesas();
+        }
+        async function loadMesas() {
+            const response = await fetch('/crupier/mesas');
+            const mesas = await response.json();
+            const tbody = document.getElementById('mesas');
+            tbody.innerHTML = '';
+            mesas.forEach(mesa => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${mesa.nombre}</td><td>${Object.keys(mesa.jugadores).length} jugadores</td>`;
+                tbody.appendChild(row);
+            });
+        }
+        loadMesas();
+    </script>
+</body>
+</html>

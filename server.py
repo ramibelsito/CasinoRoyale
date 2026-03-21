@@ -1,14 +1,21 @@
-from fastapi import FastAPI, WebSocket, Request, Form
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, WebSocket, Request, HTTPException
+from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from typing import List
 from datetime import datetime
 import csv
 import asyncio
+import json
+from models import User, Table, users, tables, next_user_id, next_table_id
 
 app = FastAPI()
 
 CSV_FILE = "eventos.csv"
+USERS_FILE = "users.json"
+TABLES_FILE = "tables.json"
 csv_lock = asyncio.Lock()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 class ConnectionManager:
     def __init__(self):
@@ -27,6 +34,31 @@ class ConnectionManager:
 
 manager = ConnectionManager()
 
+def save_data():
+    with open(USERS_FILE, 'w') as f:
+        json.dump({dni: user.dict() for dni, user in users.items()}, f)
+    with open(TABLES_FILE, 'w') as f:
+        json.dump({tid: table.dict() for tid, table in tables.items()}, f)
+
+def load_data():
+    global next_user_id
+    try:
+        with open(USERS_FILE, 'r') as f:
+            data = json.load(f)
+            for dni, udict in data.items():
+                users[dni] = User(**udict)
+                if users[dni].id >= next_user_id:
+                    next_user_id = users[dni].id + 1
+    except FileNotFoundError:
+        pass
+    try:
+        with open(TABLES_FILE, 'r') as f:
+            data = json.load(f)
+            for tid, tdict in data.items():
+                tables[int(tid)] = Table(**tdict)
+    except FileNotFoundError:
+        pass
+
 async def registrar_evento_ws(endpoint, tipo_evento, detalle, cliente_ip):
     evento = {
         "timestamp": datetime.now().isoformat(timespec="seconds"),
@@ -37,7 +69,7 @@ async def registrar_evento_ws(endpoint, tipo_evento, detalle, cliente_ip):
     }
 
     # Guardar en CSV (sync)
-    with csv_lock:
+    async with csv_lock:
         with open(CSV_FILE, mode="a", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
             writer.writerow(evento.values())
@@ -47,109 +79,155 @@ async def registrar_evento_ws(endpoint, tipo_evento, detalle, cliente_ip):
 
 @app.get("/")
 async def landing():
-    return HTMLResponse("""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Registro</title>
-        <style>
-            body { font-family: Arial; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f0f0f0; }
-            .form-container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 300px; }
-            h1 { text-align: center; color: #333; }
-            input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-            button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
-            button:hover { background: #0056b3; }
-        </style>
-    </head>
-    <body>
-        <div class="form-container">
-            <h1>Registro</h1>
-            <form id="registroForm">
-                <input type="text" id="nombre" placeholder="Nombre" required>
-                <input type="text" id="apellido" placeholder="Apellido" required>
-                <input type="text" id="dni" placeholder="DNI" required>
-                <button type="submit">Registrar</button>
-            </form>
-        </div>
-        <script>
-            document.getElementById('registroForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const nombre = document.getElementById('nombre').value;
-                const apellido = document.getElementById('apellido').value;
-                const dni = document.getElementById('dni').value;
-                
-                await fetch('/registro', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({nombre, apellido, dni})
-                });
-                
-                window.location.href = '/usuario';
-            });
-        </script>
-    </body>
-    </html>
-    """)
+    return FileResponse("static/index.html")
+
+@app.get("/login")
+async def login_page():
+    return FileResponse("static/login.html")
+
+@app.get("/usuario")
+async def usuario_page():
+    return FileResponse("static/usuario.html")
+
+@app.get("/crupier")
+async def crupier_page():
+    return FileResponse("static/crupier.html")
 
 @app.post("/registro")
 async def registro_submit(request: Request, body: dict):
+    dni = body['dni']
+    if dni in users:
+        raise HTTPException(status_code=400, detail="DNI ya registrado")
+    
+    global next_user_id
+    user = User(id=next_user_id, nombre=body['nombre'], apellido=body['apellido'], dni=dni)
+    users[dni] = user
+    next_user_id += 1
+    save_data()
+    
     await registrar_evento_ws(
         "/registro",
-        "submit",
-        f"nombre={body['nombre']}, apellido={body['apellido']}, dni={body['dni']}",
+        "registro",
+        f"Usuario {user.nombre} {user.apellido} registrado con ID {user.id}",
         request.client.host
     )
     return {"ok": True}
 
-@app.get("/usuario")
-async def usuario_page():
-    return HTMLResponse("""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Eventos en Tiempo Real</title>
-        <style>
-            body { font-family: Arial; padding: 20px; background: #f0f0f0; }
-            h1 { text-align: center; }
-            table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-            th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-            th { background: #007bff; color: white; }
-            tr:hover { background: #f5f5f5; }
-        </style>
-    </head>
-    <body>
-        <h1>Eventos Registrados</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Timestamp</th>
-                    <th>Endpoint</th>
-                    <th>Tipo</th>
-                    <th>Detalle</th>
-                    <th>IP</th>
-                </tr>
-            </thead>
-            <tbody id="tabla"></tbody>
-        </table>
-        <script>
-            const ws = new WebSocket("ws://" + location.host + "/ws");
+@app.post("/login")
+async def login_submit(request: Request, body: dict):
+    dni = body['dni']
+    if dni not in users:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    await registrar_evento_ws(
+        "/login",
+        "login",
+        f"Usuario {users[dni].nombre} {users[dni].apellido} logueado",
+        request.client.host
+    )
+    return {"ok": True}
 
-            ws.onmessage = function(event) {
-                const data = JSON.parse(event.data);
-                const table = document.getElementById("tabla");
-                const row = document.createElement("tr");
-                
-                row.innerHTML = `
-                    <td>${data.timestamp}</td>
-                    <td>${data.endpoint}</td>
-                    <td>${data.tipo_evento}</td>
-                    <td>${data.detalle}</td>
-                    <td>${data.cliente_ip}</td>
-                `;
-                
-                table.prepend(row);
-            };
-        </script>
-    </body>
-    </html>
-    """)
+@app.get("/usuario/data")
+async def usuario_data(dni: str):
+    if dni not in users:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    user = users[dni]
+    leaderboard = sorted(users.values(), key=lambda u: u.caja, reverse=True)
+    return {
+        "caja": user.caja,
+        "leaderboard": [{"nombre": u.nombre, "apellido": u.apellido, "caja": u.caja} for u in leaderboard[:10]]
+    }
+
+@app.post("/crupier/ingresar")
+async def crupier_ingresar(request: Request, body: dict):
+    dni = body['dni']
+    monto = body['monto']
+    mesa_id = body['mesa_id']
+    
+    if dni not in users:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    user = users[dni]
+    if user.en_mesa:
+        raise HTTPException(status_code=400, detail="Usuario ya en mesa")
+    
+    if user.caja < monto:
+        raise HTTPException(status_code=400, detail="Monto insuficiente")
+    
+    if mesa_id not in tables:
+        tables[mesa_id] = Table(id=mesa_id)
+    
+    table = tables[mesa_id]
+    table.jugadores[user.id] = monto
+    user.caja -= monto
+    user.en_mesa = True
+    user.mesa_id = mesa_id
+    save_data()
+    
+    await registrar_evento_ws(
+        "/crupier/ingresar",
+        "ingreso_mesa",
+        f"Usuario {user.nombre} {user.apellido} ingreso a mesa {mesa_id} con {monto}",
+        request.client.host
+    )
+    return {"ok": True}
+
+@app.post("/crupier/retirar")
+async def crupier_retirar(request: Request, body: dict):
+    dni = body['dni']
+    monto = body['monto']
+    
+    if dni not in users:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    user = users[dni]
+    if not user.en_mesa:
+        raise HTTPException(status_code=400, detail="Usuario no en mesa")
+    
+    table = tables[user.mesa_id]
+    current_monto = table.jugadores[user.id]
+    if current_monto + monto < 0:
+        raise HTTPException(status_code=400, detail="Monto negativo no permitido")
+    
+    table.jugadores[user.id] += monto
+    user.caja += monto
+    del table.jugadores[user.id]
+    user.en_mesa = False
+    user.mesa_id = None
+    save_data()
+    
+    await registrar_evento_ws(
+        "/crupier/retirar",
+        "retiro_mesa",
+        f"Usuario {user.nombre} {user.apellido} retiro de mesa con {monto}",
+        request.client.host
+    )
+    return {"ok": True}
+
+@app.get("/crupier/mesas")
+async def crupier_mesas():
+    return list(tables.values())
+
+@app.on_event("startup")
+async def startup_event():
+    load_data()
+    # Asegurar mesas existen
+    if 1 not in tables:
+        tables[1] = Table(id=1, nombre="Poker")
+    if 2 not in tables:
+        tables[2] = Table(id=2, nombre="Blackjack")
+    if 3 not in tables:
+        tables[3] = Table(id=3, nombre="Ruleta")
+    if 4 not in tables:
+        tables[4] = Table(id=4, nombre="Slot Machine")
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            # No se usa para enviar, solo recibir
+    except:
+        manager.disconnect(websocket)

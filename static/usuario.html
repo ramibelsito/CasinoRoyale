@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Usuario - Casino Royale</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+        h1 { text-align: center; }
+        .info { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #007bff; color: white; }
+        tr:hover { background: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <h1>Bienvenido</h1>
+    <div class="info">
+        <h2>Tu Caja: <span id="caja"></span></h2>
+    </div>
+    <h2>Leaderboard</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Caja</th>
+            </tr>
+        </thead>
+        <tbody id="leaderboard"></tbody>
+    </table>
+    <script>
+        async function loadData() {
+            const dni = localStorage.getItem('dni');
+            if (!dni) {
+                window.location.href = '/login';
+                return;
+            }
+            const response = await fetch(`/usuario/data?dni=${dni}`);
+            const data = await response.json();
+            document.getElementById('caja').textContent = data.caja;
+            const tbody = document.getElementById('leaderboard');
+            tbody.innerHTML = '';
+            data.leaderboard.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${user.nombre} ${user.apellido}</td><td>${user.caja}</td>`;
+                tbody.appendChild(row);
+            });
+        }
+        loadData();
+    </script>
+</body>
+</html>
