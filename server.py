@@ -201,7 +201,7 @@ async def crupier_ingresar(request: Request, body: dict):
         tables[mesa_id] = Table(id=mesa_id)
     
     table = tables[mesa_id]
-    table.jugadores[user.id] = monto
+    table.jugadores[user.id] = {"monto": monto, "ingreso": datetime.now().isoformat()}
     user.caja -= monto
     user.en_mesa = True
     user.mesa_id = mesa_id
@@ -228,11 +228,11 @@ async def crupier_retirar(request: Request, body: dict):
         raise HTTPException(status_code=400, detail="Usuario no en mesa")
     
     table = tables[user.mesa_id]
-    current_monto = table.jugadores[user.id]
+    current_monto = table.jugadores[user.id]["monto"]
     if current_monto + monto < 0:
         raise HTTPException(status_code=400, detail="Monto negativo no permitido")
     
-    table.jugadores[user.id] += monto
+    table.jugadores[user.id]["monto"] += monto
     user.caja += monto
     del table.jugadores[user.id]
     user.en_mesa = False
@@ -257,7 +257,30 @@ async def crupier_logout(crupier_token: Optional[str] = Cookie(None)):
 
 @app.get("/crupier/mesas")
 async def crupier_mesas():
-    return list(tables.values())
+    mesas_detalle = []
+    for table in tables.values():
+        jugadores_detalle = []
+        for user_id, data in table.jugadores.items():
+            # Encontrar el usuario por id
+            user = next((u for u in users.values() if u.id == user_id), None)
+            if user:
+                ingreso = datetime.fromisoformat(data["ingreso"])
+                tiempo = datetime.now() - ingreso
+                minutos = int(tiempo.total_seconds() // 60)
+                segundos = int(tiempo.total_seconds() % 60)
+                tiempo_str = f"{minutos}m {segundos}s"
+                jugadores_detalle.append({
+                    "id": user.id,
+                    "nombre": f"{user.nombre} {user.apellido}",
+                    "monto": data["monto"],
+                    "tiempo": tiempo_str
+                })
+        mesas_detalle.append({
+            "id": table.id,
+            "nombre": table.nombre,
+            "jugadores": jugadores_detalle
+        })
+    return mesas_detalle
 
 @app.post("/crupier/transferir")
 async def crupier_transferir(request: Request, body: dict):

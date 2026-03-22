@@ -52,7 +52,9 @@
         <thead>
             <tr>
                 <th>Mesa</th>
-                <th>Jugadores</th>
+                <th>Jugador</th>
+                <th>Monto</th>
+                <th>Tiempo en Mesa</th>
             </tr>
         </thead>
         <tbody id="mesas"></tbody>
@@ -136,12 +138,33 @@
             const tbody = document.getElementById('mesas');
             tbody.innerHTML = '';
             mesas.forEach(mesa => {
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>${mesa.nombre}</td><td>${Object.keys(mesa.jugadores).length} jugadores</td>`;
-                tbody.appendChild(row);
+                if (mesa.jugadores.length === 0) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${mesa.nombre}</td><td colspan="3">Sin jugadores</td>`;
+                    tbody.appendChild(row);
+                } else {
+                    mesa.jugadores.forEach((jugador, index) => {
+                        const row = document.createElement('tr');
+                        if (index === 0) {
+                            row.innerHTML = `<td rowspan="${mesa.jugadores.length}">${mesa.nombre}</td><td>${jugador.nombre}</td><td>${jugador.monto}</td><td>${jugador.tiempo}</td>`;
+                        } else {
+                            row.innerHTML = `<td>${jugador.nombre}</td><td>${jugador.monto}</td><td>${jugador.tiempo}</td>`;
+                        }
+                        tbody.appendChild(row);
+                    });
+                }
             });
         }
         loadMesas();
+
+        const ws = new WebSocket("ws://" + location.host + "/ws");
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            const eventosRelevantes = ["ingreso_mesa", "retiro_mesa"];
+            if (eventosRelevantes.includes(data.tipo_evento)) {
+                loadMesas();
+            }
+        };
     </script>
 </body>
 </html>

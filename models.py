@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from datetime import datetime
 
 class User(BaseModel):
@@ -15,7 +15,7 @@ class User(BaseModel):
 class Table(BaseModel):
     id: int
     nombre: str
-    jugadores: Dict[int, float] = {}  # user_id: monto
+    jugadores: Dict[int, Dict[str, Any]] = {}  # user_id: {"monto": float, "ingreso": str}
 
 class Evento(BaseModel):
     timestamp: str
