@@ -1,78 +1,360 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crupier - Casino Royale</title>
     <style>
-        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
-        h1 { text-align: center; }
-        .form-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        input, select { padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; }
-        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background: #0056b3; }
-        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background: #007bff; color: white; }
+        :root {
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #d1d5db;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --radius: 16px;
+
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+
+            --success: #059669;
+            --success-hover: #047857;
+
+            --warning: #d97706;
+            --warning-hover: #b45309;
+
+            --danger: #dc2626;
+            --danger-hover: #b91c1c;
+
+            --dark: #111827;
+            --dark-hover: #030712;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100svh;
+        }
+
+        .page {
+            width: min(100%, 1100px);
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .topbar h1 {
+            margin: 0;
+            font-size: clamp(24px, 4vw, 32px);
+        }
+
+        .topbar p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            border: none;
+            background: var(--danger);
+            color: white;
+            min-height: 44px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .logout-btn:hover {
+            background: var(--danger-hover);
+        }
+
+        .grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .actions-grid {
+            grid-template-columns: 1fr;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 18px;
+        }
+
+        .card h2 {
+            margin: 0 0 6px;
+            font-size: 20px;
+        }
+
+        .card p.section-desc {
+            margin: 0 0 14px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .form-stack {
+            display: grid;
+            gap: 10px;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            min-height: 48px;
+            border-radius: 12px;
+            font-size: 16px;
+        }
+
+        input,
+        select {
+            border: 1px solid var(--border);
+            padding: 12px 14px;
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+        }
+
+        button.action-btn {
+            border: none;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 12px 16px;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        button.action-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-success:hover {
+            background: var(--success-hover);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+        }
+
+        .btn-warning:hover {
+            background: var(--warning-hover);
+        }
+
+        .btn-danger {
+            background: var(--dark);
+        }
+
+        .btn-danger:hover {
+            background: var(--dark-hover);
+        }
+
+        .section-title {
+            margin: 20px 0 12px;
+            font-size: 22px;
+        }
+
+        .mesas-grid {
+            display: grid;
+            gap: 14px;
+            grid-template-columns: 1fr;
+        }
+
+        .mesa-card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 18px;
+        }
+
+        .mesa-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .mesa-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .mesa-badge {
+            background: #e5e7eb;
+            color: #374151;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .jugadores-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .jugador-item {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            background: #fafafa;
+        }
+
+        .jugador-item strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .jugador-meta {
+            display: grid;
+            gap: 6px;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .empty-state {
+            color: var(--muted);
+            font-size: 14px;
+            padding: 10px 0 4px;
+        }
+
+        @media (min-width: 768px) {
+            .page {
+                padding: 24px;
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .mesas-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .actions-grid {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-    <div style="text-align: right; padding: 10px;">
-        <button onclick="logout()" style="background: #dc3545;">Logout</button>
+    <div class="page">
+        <div class="topbar">
+            <div>
+                <h1>Panel de Crupier</h1>
+                <p>Administrá mesas, movimientos y préstamos desde el celular</p>
+            </div>
+            <button class="logout-btn" onclick="logout()">Salir</button>
+        </div>
+
+        <div class="grid actions-grid">
+            <div class="card">
+                <h2>Ingresar a mesa</h2>
+                <p class="section-desc">Asigná un jugador a una mesa con su monto inicial.</p>
+                <div class="form-stack">
+                    <input type="text" id="dni_ingreso" placeholder="DNI del jugador">
+                    <input type="number" id="monto_ingreso" placeholder="Monto">
+                    <select id="mesa_ingreso">
+                        <option value="1">Poker</option>
+                        <option value="2">Blackjack</option>
+                        <option value="3">Ruleta</option>
+                        <option value="4">Slot Machine</option>
+                    </select>
+                    <button class="action-btn btn-primary" onclick="ingresar()">Ingresar</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Retirar de mesa</h2>
+                <p class="section-desc">Retirá fichas o cerrá la participación de un jugador.</p>
+                <div class="form-stack">
+                    <input type="text" id="dni_retiro" placeholder="DNI del jugador">
+                    <input type="number" id="monto_retiro" placeholder="Monto">
+                    <button class="action-btn btn-success" onclick="retirar()">Retirar</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Transferencia</h2>
+                <p class="section-desc">Sumá saldo directo a caja sin pasar por mesa.</p>
+                <div class="form-stack">
+                    <input type="text" id="dni_transfer" placeholder="DNI del jugador">
+                    <input type="number" id="monto_transfer" placeholder="Monto a transferir">
+                    <button class="action-btn btn-warning" onclick="transferir()">Transferir</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Préstamo de 2500</h2>
+                <p class="section-desc">Agrega $2500 a caja y deuda del jugador.</p>
+                <div class="form-stack">
+                    <input type="text" id="dni_deuda" placeholder="DNI del jugador">
+                    <button class="action-btn btn-danger" onclick="agregarDeuda()">Agregar préstamo</button>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Estado de mesas</h2>
+        <div id="mesas" class="mesas-grid"></div>
     </div>
-    <h1>Crupier Panel</h1>
-    <div class="form-container">
-        <h2>Ingresar Jugador a Mesa</h2>
-        <input type="text" id="dni_ingreso" placeholder="DNI del Jugador">
-        <input type="number" id="monto_ingreso" placeholder="Monto">
-        <select id="mesa_ingreso">
-            <option value="1">Poker</option>
-            <option value="2">Blackjack</option>
-            <option value="3">Ruleta</option>
-            <option value="4">Slot Machine</option>
-        </select>
-        <button onclick="ingresar()">Ingresar</button>
-    </div>
-    <div class="form-container">
-        <h2>Retirar Jugador de Mesa</h2>
-        <input type="text" id="dni_retiro" placeholder="DNI del Jugador">
-        <input type="number" id="monto_retiro" placeholder="Monto">
-        <button onclick="retirar()">Retirar</button>
-    </div>
-    <div class="form-container">
-        <h2>Transferencia Directa</h2>
-        <input type="text" id="dni_transfer" placeholder="DNI del Jugador">
-        <input type="number" id="monto_transfer" placeholder="Monto a Transferir">
-        <button onclick="transferir()">Transferir</button>
-    </div>
-    <div class="form-container">
-        <h2>Agregar Préstamo de 2500</h2>
-        <input type="text" id="dni_deuda" placeholder="DNI del Jugador">
-        <button onclick="agregarDeuda()">Agregar 2500 a caja y deuda</button>
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Mesa</th>
-                <th>Jugador</th>
-                <th>Monto</th>
-                <th>Tiempo en Mesa</th>
-            </tr>
-        </thead>
-        <tbody id="mesas"></tbody>
-    </table>
+
     <script>
         async function logout() {
-            await fetch('/crupier/logout', {method: 'POST'});
+            await fetch('/crupier/logout', { method: 'POST' });
             window.location.href = '/crupier/login';
         }
+
         async function ingresar() {
             const dni = document.getElementById('dni_ingreso').value;
             const monto = parseFloat(document.getElementById('monto_ingreso').value);
             const mesa_id = parseInt(document.getElementById('mesa_ingreso').value);
+
             const response = await fetch('/crupier/ingresar', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({dni, monto, mesa_id})
+                body: JSON.stringify({ dni, monto, mesa_id })
             });
+
             if (response.ok) {
                 document.getElementById('dni_ingreso').value = '';
                 document.getElementById('monto_ingreso').value = '';
@@ -82,14 +364,17 @@
                 alert(error);
             }
         }
+
         async function retirar() {
             const dni = document.getElementById('dni_retiro').value;
             const monto = parseFloat(document.getElementById('monto_retiro').value);
+
             const response = await fetch('/crupier/retirar', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({dni, monto})
+                body: JSON.stringify({ dni, monto })
             });
+
             if (response.ok) {
                 document.getElementById('dni_retiro').value = '';
                 document.getElementById('monto_retiro').value = '';
@@ -99,14 +384,17 @@
                 alert(error);
             }
         }
+
         async function transferir() {
             const dni = document.getElementById('dni_transfer').value;
             const monto = parseFloat(document.getElementById('monto_transfer').value);
+
             const response = await fetch('/crupier/transferir', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({dni, monto})
+                body: JSON.stringify({ dni, monto })
             });
+
             if (response.ok) {
                 document.getElementById('dni_transfer').value = '';
                 document.getElementById('monto_transfer').value = '';
@@ -116,13 +404,16 @@
                 alert(error);
             }
         }
+
         async function agregarDeuda() {
             const dni = document.getElementById('dni_deuda').value;
+
             const response = await fetch('/crupier/deuda', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({dni})
+                body: JSON.stringify({ dni })
             });
+
             if (response.ok) {
                 document.getElementById('dni_deuda').value = '';
                 loadMesas();
@@ -132,29 +423,49 @@
                 alert(error);
             }
         }
+
         async function loadMesas() {
             const response = await fetch('/crupier/mesas');
             const mesas = await response.json();
-            const tbody = document.getElementById('mesas');
-            tbody.innerHTML = '';
+            const container = document.getElementById('mesas');
+            container.innerHTML = '';
+
             mesas.forEach(mesa => {
+                const mesaCard = document.createElement('div');
+                mesaCard.className = 'mesa-card';
+
+                let jugadoresHtml = '';
+
                 if (mesa.jugadores.length === 0) {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `<td>${mesa.nombre}</td><td colspan="3">Sin jugadores</td>`;
-                    tbody.appendChild(row);
+                    jugadoresHtml = `<div class="empty-state">Sin jugadores en esta mesa.</div>`;
                 } else {
-                    mesa.jugadores.forEach((jugador, index) => {
-                        const row = document.createElement('tr');
-                        if (index === 0) {
-                            row.innerHTML = `<td rowspan="${mesa.jugadores.length}">${mesa.nombre}</td><td>${jugador.nombre}</td><td>${jugador.monto}</td><td>${jugador.tiempo}</td>`;
-                        } else {
-                            row.innerHTML = `<td>${jugador.nombre}</td><td>${jugador.monto}</td><td>${jugador.tiempo}</td>`;
-                        }
-                        tbody.appendChild(row);
-                    });
+                    jugadoresHtml = `
+                        <div class="jugadores-list">
+                            ${mesa.jugadores.map(jugador => `
+                                <div class="jugador-item">
+                                    <strong>${jugador.nombre}</strong>
+                                    <div class="jugador-meta">
+                                        <span><b>Monto:</b> ${jugador.monto}</span>
+                                        <span><b>Tiempo:</b> ${jugador.tiempo}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
                 }
+
+                mesaCard.innerHTML = `
+                    <div class="mesa-header">
+                        <h3>${mesa.nombre}</h3>
+                        <span class="mesa-badge">${mesa.jugadores.length} jugador(es)</span>
+                    </div>
+                    ${jugadoresHtml}
+                `;
+
+                container.appendChild(mesaCard);
             });
         }
+
         loadMesas();
 
         const ws = new WebSocket("ws://" + location.host + "/ws");

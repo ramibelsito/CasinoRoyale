@@ -1,37 +1,214 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usuario - Casino Royale</title>
     <style>
-        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
-        h1 { text-align: center; }
-        .info { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background: #007bff; color: white; }
-        tr:hover { background: #f5f5f5; }
+        :root {
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #d1d5db;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --radius: 16px;
+
+            --primary: #2563eb;
+            --danger: #dc2626;
+            --success: #059669;
+            --warning: #d97706;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100svh;
+        }
+
+        .page {
+            width: min(100%, 1000px);
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .hero {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 {
+            margin: 0 0 6px;
+            font-size: clamp(24px, 4vw, 32px);
+        }
+
+        .hero p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .stats-grid {
+            display: grid;
+            gap: 14px;
+            grid-template-columns: 1fr;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 18px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .stat-caja .stat-value {
+            color: var(--primary);
+        }
+
+        .stat-deuda .stat-value {
+            color: var(--danger);
+        }
+
+        .stat-neto .stat-value {
+            color: var(--success);
+        }
+
+        .section-title {
+            margin: 0 0 12px;
+            font-size: 22px;
+        }
+
+        .leaderboard-grid {
+            display: grid;
+            gap: 12px;
+            grid-template-columns: 1fr;
+        }
+
+        .player-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 16px;
+        }
+
+        .player-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .player-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .player-mesa {
+            background: #e5e7eb;
+            color: #374151;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .player-data {
+            display: grid;
+            gap: 8px;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .player-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 8px;
+        }
+
+        .value-caja {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .value-deuda {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        .value-neto {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        @media (min-width: 700px) {
+            .page {
+                padding: 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+
+            .leaderboard-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Bienvenido</h1>
-    <div class="info">
-        <h2>Tu Caja: <span id="caja"></span></h2>
-        <h2>Tu Deuda: <span id="deuda"></span></h2>
-        <h2>Tu Neto: <span id="neto"></span></h2>
+    <div class="page">
+        <div class="hero">
+            <h1>Bienvenido</h1>
+            <p>Tu resumen de caja, deuda y posición actual en el casino</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card stat-caja">
+                <div class="stat-label">Tu Caja</div>
+                <div class="stat-value" id="caja">-</div>
+            </div>
+            <div class="stat-card stat-deuda">
+                <div class="stat-label">Tu Deuda</div>
+                <div class="stat-value" id="deuda">-</div>
+            </div>
+            <div class="stat-card stat-neto">
+                <div class="stat-label">Tu Neto</div>
+                <div class="stat-value" id="neto">-</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Leaderboard</h2>
+        <div id="leaderboard" class="leaderboard-grid"></div>
     </div>
-    <h2>Leaderboard</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Caja</th>
-                <th>Deuda</th>
-                <th>Neto</th>
-                <th>Mesa</th>
-            </tr>
-        </thead>
-        <tbody id="leaderboard"></tbody>
-    </table>
+
     <script>
         async function loadData() {
             const dni = localStorage.getItem('dni');
@@ -39,19 +216,44 @@
                 window.location.href = '/login';
                 return;
             }
+
             const response = await fetch(`/usuario/data?dni=${dni}`);
             const data = await response.json();
+
             document.getElementById('caja').textContent = data.caja;
             document.getElementById('deuda').textContent = data.deuda;
             document.getElementById('neto').textContent = data.neto;
-            const tbody = document.getElementById('leaderboard');
-            tbody.innerHTML = '';
+
+            const container = document.getElementById('leaderboard');
+            container.innerHTML = '';
+
             data.leaderboard.forEach(user => {
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>${user.nombre} ${user.apellido}</td><td>${user.caja}</td><td>${user.deuda}</td><td>${user.neto}</td><td>${user.mesa}</td>`;
-                tbody.appendChild(row);
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                card.innerHTML = `
+                    <div class="player-top">
+                        <h3 class="player-name">${user.nombre} ${user.apellido}</h3>
+                        <div class="player-mesa">${user.mesa}</div>
+                    </div>
+                    <div class="player-data">
+                        <div class="player-row">
+                            <span>Caja</span>
+                            <span class="value-caja">${user.caja}</span>
+                        </div>
+                        <div class="player-row">
+                            <span>Deuda</span>
+                            <span class="value-deuda">${user.deuda}</span>
+                        </div>
+                        <div class="player-row">
+                            <span>Neto</span>
+                            <span class="value-neto">${user.neto}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
             });
         }
+
         loadData();
 
         const ws = new WebSocket("ws://" + location.host + "/ws");
