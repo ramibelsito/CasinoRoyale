@@ -27,6 +27,7 @@
                 <th>Caja</th>
                 <th>Deuda</th>
                 <th>Neto</th>
+                <th>Mesa</th>
             </tr>
         </thead>
         <tbody id="leaderboard"></tbody>
@@ -47,7 +48,7 @@
             tbody.innerHTML = '';
             data.leaderboard.forEach(user => {
                 const row = document.createElement('tr');
-                row.innerHTML = `<td>${user.nombre} ${user.apellido}</td><td>${user.caja}</td><td>${user.deuda}</td><td>${user.neto}</td>`;
+                row.innerHTML = `<td>${user.nombre} ${user.apellido}</td><td>${user.caja}</td><td>${user.deuda}</td><td>${user.neto}</td><td>${user.mesa}</td>`;
                 tbody.appendChild(row);
             });
         }

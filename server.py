@@ -176,7 +176,8 @@ async def usuario_data(dni: str):
                 "apellido": u.apellido,
                 "caja": u.caja,
                 "deuda": u.deuda,
-                "neto": u.caja - u.deuda
+                "neto": u.caja - u.deuda,
+                "mesa": tables[u.mesa_id].nombre if u.en_mesa and u.mesa_id in tables else "Inactivo"
             } for u in leaderboard[:10]
         ]
     }
