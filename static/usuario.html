@@ -16,6 +16,8 @@
     <h1>Bienvenido</h1>
     <div class="info">
         <h2>Tu Caja: <span id="caja"></span></h2>
+        <h2>Tu Deuda: <span id="deuda"></span></h2>
+        <h2>Tu Neto: <span id="neto"></span></h2>
     </div>
     <h2>Leaderboard</h2>
     <table>
@@ -23,6 +25,8 @@
             <tr>
                 <th>Nombre</th>
                 <th>Caja</th>
+                <th>Deuda</th>
+                <th>Neto</th>
             </tr>
         </thead>
         <tbody id="leaderboard"></tbody>
@@ -37,11 +41,13 @@
             const response = await fetch(`/usuario/data?dni=${dni}`);
             const data = await response.json();
             document.getElementById('caja').textContent = data.caja;
+            document.getElementById('deuda').textContent = data.deuda;
+            document.getElementById('neto').textContent = data.neto;
             const tbody = document.getElementById('leaderboard');
             tbody.innerHTML = '';
             data.leaderboard.forEach(user => {
                 const row = document.createElement('tr');
-                row.innerHTML = `<td>${user.nombre} ${user.apellido}</td><td>${user.caja}</td>`;
+                row.innerHTML = `<td>${user.nombre} ${user.apellido}</td><td>${user.caja}</td><td>${user.deuda}</td><td>${user.neto}</td>`;
                 tbody.appendChild(row);
             });
         }
@@ -49,7 +55,11 @@
 
         const ws = new WebSocket("ws://" + location.host + "/ws");
         ws.onmessage = function(event) {
-            loadData();
+            const data = JSON.parse(event.data);
+            const eventosRelevantes = ["ingreso_mesa", "retiro_mesa", "deuda", "transferencia"];
+            if (eventosRelevantes.includes(data.tipo_evento)) {
+                loadData();
+            }
         };
     </script>
 </body>
