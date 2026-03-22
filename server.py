@@ -165,10 +165,20 @@ async def usuario_data(dni: str):
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
     
     user = users[dni]
-    leaderboard = sorted(users.values(), key=lambda u: u.caja, reverse=True)
+    leaderboard = sorted(users.values(), key=lambda u: (u.caja - u.deuda), reverse=True)
     return {
         "caja": user.caja,
-        "leaderboard": [{"nombre": u.nombre, "apellido": u.apellido, "caja": u.caja} for u in leaderboard[:10]]
+        "deuda": user.deuda,
+        "neto": user.caja - user.deuda,
+        "leaderboard": [
+            {
+                "nombre": u.nombre,
+                "apellido": u.apellido,
+                "caja": u.caja,
+                "deuda": u.deuda,
+                "neto": u.caja - u.deuda
+            } for u in leaderboard[:10]
+        ]
     }
 
 @app.post("/crupier/ingresar")
@@ -265,6 +275,26 @@ async def crupier_transferir(request: Request, body: dict):
         "/crupier/transferir",
         "transferencia",
         f"Transferencia de {monto} a usuario {user.nombre} {user.apellido}",
+        request.client.host
+    )
+    return {"ok": True}
+
+@app.post("/crupier/deuda")
+async def crupier_deuda(request: Request, body: dict):
+    dni = body['dni']
+
+    if dni not in users:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+    user = users[dni]
+    user.caja += 2500.0
+    user.deuda += 2500.0
+    save_data()
+
+    await registrar_evento_ws(
+        "/crupier/deuda",
+        "deuda",
+        f"Usuario {user.nombre} {user.apellido} recibe 2500, deuda total {user.deuda}",
         request.client.host
     )
     return {"ok": True}

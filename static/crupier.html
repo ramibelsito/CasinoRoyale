@@ -43,6 +43,11 @@
         <input type="number" id="monto_transfer" placeholder="Monto a Transferir">
         <button onclick="transferir()">Transferir</button>
     </div>
+    <div class="form-container">
+        <h2>Agregar Préstamo de 2500</h2>
+        <input type="text" id="dni_deuda" placeholder="DNI del Jugador">
+        <button onclick="agregarDeuda()">Agregar 2500 a caja y deuda</button>
+    </div>
     <table>
         <thead>
             <tr>
@@ -104,6 +109,22 @@
                 document.getElementById('dni_transfer').value = '';
                 document.getElementById('monto_transfer').value = '';
                 loadMesas();
+            } else {
+                const error = await response.text();
+                alert(error);
+            }
+        }
+        async function agregarDeuda() {
+            const dni = document.getElementById('dni_deuda').value;
+            const response = await fetch('/crupier/deuda', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({dni})
+            });
+            if (response.ok) {
+                document.getElementById('dni_deuda').value = '';
+                loadMesas();
+                alert('Se agregó 2500 a caja y deuda para el usuario.');
             } else {
                 const error = await response.text();
                 alert(error);
