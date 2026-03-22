@@ -7,7 +7,8 @@ class User(BaseModel):
     nombre: str
     apellido: str
     dni: str
-    caja: float = 2500.0  # caja inicial
+    caja: float = 2500.0    # caja inicial
+    deuda: float = 0.0      # deuda por cajas posteriores            
     en_mesa: bool = False
     mesa_id: Optional[int] = None
 
@@ -28,3 +29,4 @@ users: Dict[str, User] = {}  # dni -> User
 tables: Dict[int, Table] = {}
 next_user_id = 1
 next_table_id = 1
+

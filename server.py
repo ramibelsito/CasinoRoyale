@@ -9,6 +9,9 @@ import json
 import secrets
 from models import User, Table, users, tables, next_user_id, next_table_id
 
+
+
+
 app = FastAPI()
 
 CSV_FILE = "eventos.csv"
