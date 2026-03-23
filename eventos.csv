@@ -182,3 +182,5 @@ timestamp,endpoint,tipo_evento,detalle,cliente_ip
 2026-03-23T03:03:05,/crupier/retirar,retiro_mesa,Usuario Rafael Dalzotto retiro de mesa con 2525,192.168.1.36
 2026-03-23T03:03:18,/crupier/retirar,retiro_mesa,Usuario Iñaki Alonso Guarrochena retiro de mesa con 0,192.168.1.36
 2026-03-23T03:07:42,/login,login,Usuario Ramiro Belsito logueado,192.168.1.15
+2026-03-23T04:11:41,/login,login,Usuario Ramiro Belsito logueado,127.0.0.1
+2026-03-23T04:31:58,/login,login,Usuario Ramiro Belsito logueado,127.0.0.1

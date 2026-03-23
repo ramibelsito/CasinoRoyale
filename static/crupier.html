@@ -45,7 +45,7 @@
         .page {
             width: min(100%, 1100px);
             margin: 0 auto;
-            padding: 16px;
+            padding: 20px;
         }
 
         .topbar {
@@ -53,7 +53,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 24px;
         }
 
         .topbar h1 {
@@ -84,9 +84,9 @@
             background: var(--danger-hover);
         }
 
-        .grid {
+        .stats-panel {
             display: grid;
-            gap: 16px;
+            gap: 40px;
         }
 
         .actions-grid {
@@ -98,16 +98,16 @@
             background: var(--card);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            padding: 18px;
+            padding: 32px;
         }
 
         .card h2 {
-            margin: 0 0 6px;
+            margin: 0 0 12px;
             font-size: 20px;
         }
 
         .card p.section-desc {
-            margin: 0 0 14px;
+            margin: 0 0 20px;
             color: var(--muted);
             font-size: 14px;
         }
@@ -186,7 +186,7 @@
         }
 
         .section-title {
-            margin: 20px 0 12px;
+            margin: 32px 0 16px;
             font-size: 22px;
         }
 
@@ -258,7 +258,7 @@
 
         @media (min-width: 768px) {
             .page {
-                padding: 24px;
+                padding: 32px;
             }
 
             .actions-grid {
@@ -468,14 +468,369 @@
 
         loadMesas();
 
+        const statsPanel = document.createElement('div');
+        statsPanel.id = 'estadisticasPanel';
+        statsPanel.style = 'display: none; margin-top: 16px;';
+
+        const statsToggle = document.createElement('button');
+        statsToggle.id = 'toggle_stats';
+        statsToggle.className = 'action-btn btn-primary';
+        statsToggle.style = 'margin: 20px 0;';
+        statsToggle.innerText = 'Mostrar estadísticas de la noche';
+        statsToggle.onclick = toggleStats;
+
+        document.querySelector('.page').insertBefore(statsToggle, document.querySelector('.mesas-grid'));
+        document.querySelector('.page').appendChild(statsPanel);
+
+        let statsLoaded = false;
+        let creatorsChart = null;
+
+        async function toggleStats() {
+            const panel = document.getElementById('estadisticasPanel');
+            if (panel.style.display === 'none') {
+                panel.style.display = 'block';
+                statsToggle.innerText = 'Ocultar estadísticas de la noche';
+                if (!statsLoaded) {
+                    await loadEstadisticas();
+                    statsLoaded = true;
+                }
+            } else {
+                panel.style.display = 'none';
+                statsToggle.innerText = 'Mostrar estadísticas de la noche';
+            }
+        }
+
+        function formatCurrency(value) {
+            return '$' + Number(value).toFixed(2);
+        }
+
+        async function loadEstadisticas() {
+            try {
+                const response = await fetch('/crupier/estadisticas');
+                const data = await response.json();
+                renderEstadisticas(data);
+            } catch (error) {
+                alert('Error cargando estadísticas: ' + error);
+            }
+        }
+
+        function renderEstadisticas(data) {
+            const panel = document.getElementById('estadisticasPanel');
+            panel.innerHTML = '';
+            panel.className = 'stats-panel';
+
+            const summaryCard = document.createElement('div');
+            summaryCard.className = 'card';
+            summaryCard.innerHTML = `
+                <h2>Resumen de la noche</h2>
+                <p class='section-desc'>${data.player_count} jugadores con movimientos entre ${data.night_span.start || 'N/A'} y ${data.night_span.end || 'N/A'} (${data.night_span.duration_minutes || 0} min).</p>
+                <div><b>Eventos:</b> ${data.summary.total_eventos}</div>
+                <div><b>Ingreso total:</b> ${formatCurrency(data.summary.total_ingreso)}</div>
+                <div><b>Retiro total:</b> ${formatCurrency(data.summary.total_retiro)}</div>
+                <div><b>Net casa:</b> ${formatCurrency(data.summary.neto_casa)}</div>
+                <div><b>Transferencias:</b> ${formatCurrency(data.summary.total_transferencias)}</div>
+                <div><b>Deudas:</b> ${formatCurrency(data.summary.total_deudas)}</div>
+                <div><b>Promedio total por jugador (2500-in+out):</b> ${formatCurrency(data.summary.average_game_total)}</div>
+            `;
+            panel.appendChild(summaryCard);
+
+            const bestCard = document.createElement('div');
+            bestCard.className = 'card';
+            bestCard.innerHTML = `
+                <h2>Top ganador y top perdedor</h2>
+                <div><b>Mejor jugador:</b> ${data.top_winner.usuario} (${formatCurrency(data.top_winner.game_total)})</div>
+                <div><b>Peor jugador:</b> ${data.top_loser.usuario} (${formatCurrency(data.top_loser.game_total)})</div>
+            `;
+            panel.appendChild(bestCard);
+
+            const tablesCard = document.createElement('div');
+            tablesCard.className = 'card';
+            tablesCard.innerHTML = `
+                <h2>Flujo por mesa</h2>
+                ${data.tables.map(t => `
+                    <div style='border: 1px solid #E5E7EB; padding: 16px; margin-bottom: 16px; border-radius: 10px;'>
+                        <b>${t.mesa_nombre || 'Mesa ' + t.mesa_id}</b>: Ingreso ${formatCurrency(t.ingreso)}, Retiro ${formatCurrency(t.retiro)}, Casa ${formatCurrency(t.net_casa)}
+                    </div>
+                `).join('')}
+            `;
+            panel.appendChild(tablesCard);
+
+            const topPlayersCard = document.createElement('div');
+            topPlayersCard.className = 'card';
+            topPlayersCard.innerHTML = `
+                <h2>Ranking de jugadores (neto de mesa)</h2>
+                <p class='section-desc'>${data.players.length} jugadores en total</p>
+                <table style='width:100%; border-collapse: collapse;'>
+                    <thead><tr><th style='text-align:left; padding:16px;'>Jugador</th><th style='text-align:right; padding:16px;'>Ingreso</th><th style='text-align:right; padding:16px;'>Retiro</th><th style='text-align:right; padding:16px;'>Total (2500 - ingreso + retiro)</th></tr></thead>
+                    <tbody>
+                        ${data.players.map(p => `
+                            <tr>
+                                <td style='padding:16px;'>${p.usuario}</td>
+                                <td style='padding:16px; text-align:right;'>${formatCurrency(p.ingreso_total)}</td>
+                                <td style='padding:16px; text-align:right;'>${formatCurrency(p.retiro_total)}</td>
+                                <td style='padding:16px; text-align:right; color:${p.game_total >= 2500 ? '#059669' : '#dc2626'};'>${formatCurrency(p.game_total)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            panel.appendChild(topPlayersCard);
+
+            const winnerStatsCard = document.createElement('div');
+            winnerStatsCard.className = 'card';
+            const topWinners = data.players.filter(p => p.game_total > 2500).sort((a, b) => b.game_total - a.game_total).slice(0, 5);
+            
+            if (topWinners.length > 0) {
+                winnerStatsCard.innerHTML = `
+                    <h2>Top Ganadores - Detalles por Mesa</h2>
+                    <p class='section-desc'>${topWinners.length} jugador(es) con ganancias</p>
+                `;
+                
+                topWinners.forEach(winner => {
+                    const ganancia = winner.game_total - 2500;
+                    const tablaHtml = `
+                    <div style='border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin-bottom: 16px; background: #f9fafb;'>
+                        <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;'>
+                            <div>
+                                <div style='font-size: 12px; color: #6b7280;'>Jugador</div>
+                                <div style='font-weight: 700; font-size: 16px;'>${winner.usuario}</div>
+                            </div>
+                            <div>
+                                <div style='font-size: 12px; color: #6b7280;'>Ganancia Total</div>
+                                <div style='font-weight: 700; font-size: 16px; color: #059669;'>${formatCurrency(ganancia)}</div>
+                            </div>
+                        </div>
+                        <div style='border-top: 1px solid #e5e7eb; padding-top: 10px;'>
+                            <div style='font-weight: 600; font-size: 13px; margin-bottom: 8px; color: #374151;'>Performance por mesa:</div>
+                            ${winner.mesas && winner.mesas.length > 0 ? `
+                                <div style='display: grid; gap: 6px;'>
+                                    ${winner.mesas.map(m => `
+                                        <div style='display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 8px; padding: 12px; background: white; border-radius: 8px; font-size: 13px;'>
+                                            <div><b>${m.mesa_nombre}</b></div>
+                                            <div style='text-align: right;'>In: ${formatCurrency(m.ingreso)}</div>
+                                            <div style='text-align: right;'>Out: ${formatCurrency(m.retiro)}</div>
+                                            <div style='text-align: right; color: ${m.neto >= 0 ? '#059669' : '#dc2626'};'><b>${formatCurrency(m.neto)}</b></div>
+                                        </div>
+                                        <div style='font-size: 12px; color: #6b7280; padding: 0 8px; margin-bottom: 6px;'>⏱️ ${m.tiempo_minutos} minutos</div>
+                                    `).join('')}
+                                </div>
+                            ` : '<div style="color: #6b7280; font-size: 13px;">Sin datos de mesas</div>'}
+                        </div>
+                    </div>
+                    `;
+                    const div = document.createElement('div');
+                    div.innerHTML = tablaHtml;
+                    winnerStatsCard.appendChild(div);
+                });
+            } else {
+                winnerStatsCard.innerHTML = `
+                    <h2>Top Ganadores - Detalles por Mesa</h2>
+                    <div style='color: #6b7280; font-size: 14px; padding: 12px;'>No hay jugadores con ganancias en esta sesión</div>
+                `;
+            }
+            panel.appendChild(winnerStatsCard);
+
+            const concordCard = document.createElement('div');
+            concordCard.className = 'card';
+            const discrepancias = data.concordancia ? data.concordancia.filter(c => !c.caja_ok) : [];
+            if (discrepancias.length > 0) {
+                concordCard.innerHTML = `
+                    <h2>Chequeo Eventos Log vs Cajas Finales (Discrepancias)</h2>
+                    <p class='section-desc'>${discrepancias.length} jugador(es) con saldos que no coinciden</p>
+                    <table style='width:100%; border-collapse: collapse;'>
+                        <thead><tr><th style='text-align:left; padding:16px;'>Jugador</th><th style='text-align:right; padding:16px;'>CSV (total)</th><th style='text-align:right; padding:16px;'>users.json caja</th><th style='text-align:right; padding:16px;'>Diferencia</th></tr></thead>
+                        <tbody>
+                            ${discrepancias.map(c => `
+                                <tr style='background-color: #fef2f2;'>
+                                    <td style='padding:16px;'>${c.usuario}</td>
+                                    <td style='padding:16px; text-align:right;'>${formatCurrency(c.csv_game_total)}</td>
+                                    <td style='padding:16px; text-align:right;'>${formatCurrency(c.users_json_caja)}</td>
+                                    <td style='padding:16px; text-align:right; color:#dc2626;'>${formatCurrency(c.csv_game_total - c.users_json_caja)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } else {
+                concordCard.innerHTML = `
+                    <h2> Coincidencia de Log Eventos con Cajas Finales</h2>
+                    <div style='padding: 12px; background-color: #ecfdf5; border-radius: 8px; color: #047857;'>✅ Todo coincide correctamente</div>
+                `;
+            }
+            panel.appendChild(concordCard);
+
+            const tablesFlowCard = document.createElement('div');
+            tablesFlowCard.className = 'card';
+            tablesFlowCard.innerHTML = `
+                <h2>Fluctuaciones de entradas y salidas por mesa</h2>
+                <div style='margin-top: 16px;'>
+                    <select id='tableSelect' style='width:100%; padding:12px; border-radius: 8px; border: 1px solid #E5E7EB; margin-bottom: 16px;'>
+                        <option value='all'>Todas las mesas</option>
+                        ${data.tables.map(t => `<option value='${t.mesa_id}'>${t.mesa_nombre}</option>`).join('')}
+                    </select>
+                    <canvas id='tableFlowChart' style='width:100%; max-height:400px;'></canvas>
+                </div>
+            `;
+            panel.appendChild(tablesFlowCard);
+
+            // Crear gráfico de flujo de mesas
+            let tableFlowChart = null;
+            function updateTableFlowChart() {
+                const selectedTableId = document.getElementById('tableSelect').value;
+                const ctx = document.getElementById('tableFlowChart').getContext('2d');
+                
+                let chartsData = [];
+                if (selectedTableId === 'all') {
+                    chartsData = data.tables.filter(t => t.timeline && t.timeline.length > 0);
+                } else {
+                    const table = data.tables.find(t => t.mesa_id.toString() === selectedTableId);
+                    if (table && table.timeline) chartsData = [table];
+                }
+
+                if (chartsData.length === 0 || !chartsData[0].timeline) {
+                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    return;
+                }
+
+                if (tableFlowChart) tableFlowChart.destroy();
+
+                // Obtener todos los timestamps únicos
+                const allTimestamps = new Set();
+                chartsData.forEach(t => {
+                    if (t.timeline) t.timeline.forEach(event => allTimestamps.add(event.timestamp));
+                });
+                const sortedTimestamps = Array.from(allTimestamps).sort();
+                
+                // Convertir timestamps a horas (HH:MM)
+                const labels = sortedTimestamps.map(ts => {
+                    const date = new Date(ts);
+                    return date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false });
+                });
+
+                const colors = ['#2563eb', '#d97706', '#059669', '#7c3aed', '#dc2626'];
+                const datasets = chartsData.map((table, idx) => ({
+                    label: table.mesa_nombre,
+                    data: labels.map((label, idx) => {
+                        const point = table.timeline.find(p => {
+                            const date = new Date(p.timestamp);
+                            const pointTime = date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false });
+                            return pointTime === label;
+                        });
+                        return point ? point.neto : null;
+                    }),
+                    borderColor: colors[idx % colors.length],
+                    backgroundColor: colors[idx % colors.length] + '20',
+                    fill: true,
+                    tension: 0.3,
+                    spanGaps: true
+                }));
+
+                tableFlowChart = new Chart(ctx, {
+                    type: 'line',
+                    data: { labels, datasets },
+                    options: {
+                        plugins: { 
+                            legend: { position: 'top' },
+                            title: { display: false }
+                        },
+                        scales: {
+                            y: { 
+                                title: { display: true, text: 'Neto por mesa ($)' },
+                                beginAtZero: true
+                            },
+                            x: { 
+                                title: { display: true, text: 'Hora' },
+                                ticks: { maxRotation: 45, minRotation: 0 }
+                            }
+                        },
+                        maintainAspectRatio: false,
+                        responsive: true
+                    }
+                });
+            }
+
+            // Event listener para cambiar mesa
+            document.getElementById('tableSelect').addEventListener('change', updateTableFlowChart);
+            
+            // Crear gráfico inicial
+            setTimeout(updateTableFlowChart, 100);
+
+            const curvesCard = document.createElement('div');
+            curvesCard.className = 'card';
+            curvesCard.innerHTML = `
+                <h2>Curvas de variación (top 2 creadores de eventos)</h2>
+                <canvas id='topCreatorsChart' style='width:100%; max-height:380px;'></canvas>
+            `;
+            panel.appendChild(curvesCard);
+
+            if (!data.top_creators || data.top_creators.length === 0) {
+                const noChart = document.createElement('p');
+                noChart.textContent = 'No hay suficientes datos de creador para las curvas.';
+                curvesCard.appendChild(noChart);
+                return;
+            }
+
+            const ctx = document.getElementById('topCreatorsChart').getContext('2d');
+            if (!ctx) {
+                const noChart = document.createElement('p');
+                noChart.textContent = 'No se pudo crear el gráfico de curvas.';
+                curvesCard.appendChild(noChart);
+                return;
+            }
+
+            if (creatorsChart) creatorsChart.destroy();
+
+            const allPoints = new Set();
+            data.top_creators.forEach(c => c.curve.forEach(point => allPoints.add(point.timestamp)));
+            const sortedPoints = Array.from(allPoints).sort();
+            
+            // Convertir timestamps a horas (HH:MM)
+            const timeLabels = sortedPoints.map(ts => {
+                const date = new Date(ts);
+                return date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false });
+            });
+
+            const datasets = data.top_creators.map((creador, index) => ({
+                label: creador.usuario,
+                data: timeLabels.map((label, idx) => {
+                    const pt = creador.curve.find(p => {
+                        const date = new Date(p.timestamp);
+                        const pointTime = date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false });
+                        return pointTime === label;
+                    });
+                    return pt ? pt.net_play : null;
+                }),
+                fill: false,
+                borderColor: index === 0 ? '#2563eb' : '#d97706',
+                tension: 0.3,
+                spanGaps: true
+            }));
+
+            creatorsChart = new Chart(ctx, {
+                type: 'line',
+                data: { labels: timeLabels, datasets },
+                options: {
+                    plugins: { legend: { position: 'top' } },
+                    scales: {
+                        y: { title: { display: true, text: 'Neto de mesa (USD)' } },
+                        x: { title: { display: true, text: 'Hora' }, type: 'category', ticks: { maxRotation: 45, minRotation: 0 } }
+                    },
+                    maintainAspectRatio: false,
+                    responsive: true
+                }
+            });
+        }
+
         const ws = new WebSocket("ws://" + location.host + "/ws");
         ws.onmessage = function(event) {
             const data = JSON.parse(event.data);
             const eventosRelevantes = ["ingreso_mesa", "retiro_mesa"];
             if (eventosRelevantes.includes(data.tipo_evento)) {
                 loadMesas();
+                if (statsLoaded) loadEstadisticas();
             }
         };
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
