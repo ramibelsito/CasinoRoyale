@@ -1,3 +1,184 @@
 timestamp,endpoint,tipo_evento,detalle,cliente_ip
 
 2026-03-22T18:52:58,/login,login,Usuario Ramiro Belsito logueado,192.168.1.15
+2026-03-22T20:26:15,/registro,registro,Usuario Joaquin Torino registrado con ID 2,192.168.1.39
+2026-03-22T20:26:28,/login,login,Usuario Joaquin Torino logueado,192.168.1.39
+2026-03-22T20:26:49,/registro,registro,Usuario Agustín Domínguez registrado con ID 3,192.168.1.37
+2026-03-22T20:26:56,/login,login,Usuario Agustín Domínguez logueado,192.168.1.37
+2026-03-22T20:27:14,/registro,registro,Usuario Juan Ignacio Pla registrado con ID 4,192.168.1.40
+2026-03-22T20:27:30,/login,login,Usuario Juan Ignacio Pla logueado,192.168.1.40
+2026-03-22T20:29:44,/login,login,Usuario Agustín Domínguez logueado,192.168.1.37
+2026-03-22T20:33:25,/registro,registro,Usuario Rocco  Gastaldi registrado con ID 5,192.168.1.41
+2026-03-22T20:33:34,/login,login,Usuario Rocco  Gastaldi logueado,192.168.1.41
+2026-03-22T20:41:59,/registro,registro,Usuario Danna Mindiuk registrado con ID 6,192.168.1.43
+2026-03-22T20:42:04,/registro,registro,Usuario Manuel Dominguez registrado con ID 7,192.168.1.42
+2026-03-22T20:42:07,/login,login,Usuario Danna Mindiuk logueado,192.168.1.43
+2026-03-22T20:42:13,/login,login,Usuario Manuel Dominguez logueado,192.168.1.42
+2026-03-22T20:56:22,/login,login,Usuario Manuel Dominguez logueado,192.168.1.42
+2026-03-22T21:03:30,/registro,registro,Usuario Pedro Stefoni Rey Iraola registrado con ID 8,192.168.1.44
+2026-03-22T21:03:57,/registro,registro,Usuario Rafael Dalzotto registrado con ID 9,192.168.1.46
+2026-03-22T21:04:05,/registro,registro,Usuario Nacho  Terra registrado con ID 10,192.168.1.45
+2026-03-22T21:04:12,/login,login,Usuario Nacho  Terra logueado,192.168.1.45
+2026-03-22T21:04:14,/login,login,Usuario Rafael Dalzotto logueado,192.168.1.46
+2026-03-22T21:04:47,/registro,registro,Usuario Nacho 🚬 Sammartino registrado con ID 11,192.168.1.48
+2026-03-22T21:05:00,/login,login,Usuario Nacho 🚬 Sammartino logueado,192.168.1.48
+2026-03-22T21:05:57,/registro,registro,Usuario Iñaki Alonso Guarrochena registrado con ID 12,192.168.1.47
+2026-03-22T21:06:00,/login,login,Usuario Iñaki Alonso Guarrochena logueado,192.168.1.47
+2026-03-22T21:10:00,/login,login,Usuario Pedro Stefoni Rey Iraola logueado,192.168.1.44
+2026-03-22T21:37:11,/registro,registro,Usuario Facundo Torres registrado con ID 13,192.168.1.26
+2026-03-22T21:37:18,/login,login,Usuario Facundo Torres logueado,192.168.1.26
+2026-03-22T23:07:14,/crupier/ingresar,ingreso_mesa,Usuario Juan Ignacio Pla ingreso a mesa 1 con 500,192.168.1.15
+2026-03-22T23:07:27,/crupier/ingresar,ingreso_mesa,Usuario Pedro Stefoni Rey Iraola ingreso a mesa 1 con 500,192.168.1.15
+2026-03-22T23:07:30,/crupier/ingresar,ingreso_mesa,Usuario Facundo Torres ingreso a mesa 3 con 500,192.168.1.21
+2026-03-22T23:08:26,/crupier/retirar,retiro_mesa,Usuario Facundo Torres retiro de mesa con 500,192.168.1.21
+2026-03-22T23:08:43,/crupier/ingresar,ingreso_mesa,Usuario Facundo Torres ingreso a mesa 3 con 100,192.168.1.21
+2026-03-22T23:08:56,/crupier/ingresar,ingreso_mesa,Usuario Joaquin Torino ingreso a mesa 3 con 100,192.168.1.21
+2026-03-22T23:08:58,/login,login,Usuario Manuel Dominguez logueado,192.168.1.42
+2026-03-22T23:10:06,/crupier/ingresar,ingreso_mesa,Usuario Rocco  Gastaldi ingreso a mesa 1 con 500,192.168.1.15
+2026-03-22T23:10:18,/crupier/ingresar,ingreso_mesa,Usuario Iñaki Alonso Guarrochena ingreso a mesa 1 con 500,192.168.1.15
+2026-03-22T23:10:19,/crupier/ingresar,ingreso_mesa,Usuario Rafael Dalzotto ingreso a mesa 3 con 100,192.168.1.21
+2026-03-22T23:10:50,/crupier/ingresar,ingreso_mesa,Usuario Manuel Dominguez ingreso a mesa 1 con 500,192.168.1.15
+2026-03-22T23:11:23,/crupier/ingresar,ingreso_mesa,Usuario Ramiro Belsito ingreso a mesa 1 con 500,192.168.1.15
+2026-03-22T23:11:56,/crupier/transferir,transferencia,Transferencia de 25 a usuario Rafael Dalzotto,192.168.1.21
+2026-03-22T23:12:23,/crupier/transferir,transferencia,Transferencia de 8 a usuario Joaquin Torino,192.168.1.21
+2026-03-22T23:12:46,/crupier/transferir,transferencia,Transferencia de 32 a usuario Joaquin Torino,192.168.1.21
+2026-03-22T23:17:35,/crupier/retirar,retiro_mesa,Usuario Rafael Dalzotto retiro de mesa con 0,192.168.1.21
+2026-03-22T23:17:51,/crupier/ingresar,ingreso_mesa,Usuario Rafael Dalzotto ingreso a mesa 3 con 100,192.168.1.21
+2026-03-22T23:27:17,/crupier/transferir,transferencia,Transferencia de 100 a usuario Facundo Torres,192.168.1.21
+2026-03-22T23:29:22,/crupier/transferir,transferencia,Transferencia de 100 a usuario Rafael Dalzotto,192.168.1.21
+2026-03-22T23:31:11,/crupier/transferir,transferencia,Transferencia de 100 a usuario Facundo Torres,192.168.1.21
+2026-03-22T23:32:55,/crupier/ingresar,ingreso_mesa,Usuario Nacho  Terra ingreso a mesa 2 con 500,192.168.1.18
+2026-03-22T23:33:38,/crupier/ingresar,ingreso_mesa,Usuario Agustín Domínguez ingreso a mesa 2 con 500,192.168.1.18
+2026-03-22T23:33:40,/login,login,Usuario Nacho  Terra logueado,192.168.1.45
+2026-03-22T23:33:55,/crupier/ingresar,ingreso_mesa,Usuario Nacho 🚬 Sammartino ingreso a mesa 2 con 400,192.168.1.18
+2026-03-22T23:37:24,/crupier/retirar,retiro_mesa,Usuario Manuel Dominguez retiro de mesa con 975,192.168.1.8
+2026-03-22T23:38:25,/crupier/retirar,retiro_mesa,Usuario Facundo Torres retiro de mesa con 125,192.168.1.36
+2026-03-22T23:38:53,/crupier/retirar,retiro_mesa,Usuario Joaquin Torino retiro de mesa con 145,192.168.1.36
+2026-03-22T23:39:00,/crupier/ingresar,ingreso_mesa,Usuario Facundo Torres ingreso a mesa 1 con 500,192.168.1.8
+2026-03-22T23:39:21,/crupier/ingresar,ingreso_mesa,Usuario Manuel Dominguez ingreso a mesa 3 con 100,192.168.1.36
+2026-03-22T23:39:54,/crupier/ingresar,ingreso_mesa,Usuario Danna Mindiuk ingreso a mesa 3 con 100,192.168.1.36
+2026-03-22T23:41:12,/crupier/ingresar,ingreso_mesa,Usuario Joaquin Torino ingreso a mesa 1 con 500,192.168.1.8
+2026-03-22T23:42:38,/crupier/retirar,retiro_mesa,Usuario Pedro Stefoni Rey Iraola retiro de mesa con 125,192.168.1.8
+2026-03-22T23:43:14,/crupier/ingresar,ingreso_mesa,Usuario Pedro Stefoni Rey Iraola ingreso a mesa 1 con 500,192.168.1.8
+2026-03-22T23:44:13,/crupier/retirar,retiro_mesa,Usuario Juan Ignacio Pla retiro de mesa con 100,192.168.1.8
+2026-03-22T23:44:30,/crupier/ingresar,ingreso_mesa,Usuario Juan Ignacio Pla ingreso a mesa 1 con 500,192.168.1.8
+2026-03-22T23:47:09,/crupier/retirar,retiro_mesa,Usuario Manuel Dominguez retiro de mesa con 0,192.168.1.36
+2026-03-22T23:47:53,/crupier/ingresar,ingreso_mesa,Usuario Manuel Dominguez ingreso a mesa 3 con 100,192.168.1.36
+2026-03-22T23:56:00,/crupier/retirar,retiro_mesa,Usuario Ramiro Belsito retiro de mesa con 0,192.168.1.8
+2026-03-22T23:58:43,/crupier/transferir,transferencia,Transferencia de 50 a usuario Danna Mindiuk,192.168.1.36
+2026-03-23T00:00:49,/crupier/transferir,transferencia,Transferencia de 175 a usuario Danna Mindiuk,192.168.1.36
+2026-03-23T00:01:03,/crupier/transferir,transferencia,Transferencia de 175 a usuario Manuel Dominguez,192.168.1.36
+2026-03-23T00:01:08,/login,login,Usuario Agustín Domínguez logueado,192.168.1.37
+2026-03-23T00:01:55,/crupier/retirar,retiro_mesa,Usuario Manuel Dominguez retiro de mesa con 20,192.168.1.36
+2026-03-23T00:02:20,/crupier/ingresar,ingreso_mesa,Usuario Manuel Dominguez ingreso a mesa 3 con 100,192.168.1.36
+2026-03-23T00:08:43,/crupier/retirar,retiro_mesa,Usuario Nacho 🚬 Sammartino retiro de mesa con 325,192.168.1.18
+2026-03-23T00:10:52,/login,login,Usuario Agustín Domínguez logueado,192.168.1.37
+2026-03-23T00:11:32,/crupier/retirar,retiro_mesa,Usuario Iñaki Alonso Guarrochena retiro de mesa con 500,192.168.1.8
+2026-03-23T00:12:13,/crupier/ingresar,ingreso_mesa,Usuario Nacho 🚬 Sammartino ingreso a mesa 1 con 500,192.168.1.8
+2026-03-23T00:13:41,/registro,registro,Usuario Joaquin Gomez registrado con ID 14,192.168.1.36
+2026-03-23T00:13:48,/login,login,Usuario Joaquin Gomez logueado,192.168.1.36
+2026-03-23T00:14:50,/crupier/ingresar,ingreso_mesa,Usuario Joaquin Gomez ingreso a mesa 2 con 500,192.168.1.18
+2026-03-23T00:14:56,/registro,registro,Usuario Sofia Scravaglieri registrado con ID 15,192.168.1.34
+2026-03-23T00:15:01,/login,login,Usuario Sofia Scravaglieri logueado,192.168.1.34
+2026-03-23T00:22:09,/crupier/ingresar,ingreso_mesa,Usuario Sofia Scravaglieri ingreso a mesa 1 con 100,192.168.1.8
+2026-03-23T00:23:47,/crupier/retirar,retiro_mesa,Usuario Nacho  Terra retiro de mesa con 550,192.168.1.18
+2026-03-23T00:24:12,/crupier/retirar,retiro_mesa,Usuario Agustín Domínguez retiro de mesa con 250,192.168.1.18
+2026-03-23T00:24:42,/crupier/retirar,retiro_mesa,Usuario Joaquin Gomez retiro de mesa con 625,192.168.1.18
+2026-03-23T00:25:47,/crupier/transferir,transferencia,Transferencia de 180 a usuario Sofia Scravaglieri,192.168.1.8
+2026-03-23T00:26:02,/crupier/retirar,retiro_mesa,Usuario Rocco  Gastaldi retiro de mesa con 400,192.168.1.18
+2026-03-23T00:26:38,/crupier/retirar,retiro_mesa,Usuario Juan Ignacio Pla retiro de mesa con 1600,192.168.1.18
+2026-03-23T00:26:50,/crupier/retirar,retiro_mesa,Usuario Facundo Torres retiro de mesa con 625,192.168.1.21
+2026-03-23T00:27:05,/crupier/retirar,retiro_mesa,Usuario Nacho 🚬 Sammartino retiro de mesa con 200,192.168.1.18
+2026-03-23T00:27:28,/crupier/retirar,retiro_mesa,Usuario Pedro Stefoni Rey Iraola retiro de mesa con 700,192.168.1.21
+2026-03-23T00:27:49,/crupier/retirar,retiro_mesa,Usuario Manuel Dominguez retiro de mesa con 30,192.168.1.8
+2026-03-23T00:27:59,/crupier/retirar,retiro_mesa,Usuario Joaquin Torino retiro de mesa con 100,192.168.1.21
+2026-03-23T00:28:24,/crupier/retirar,retiro_mesa,Usuario Danna Mindiuk retiro de mesa con 55,192.168.1.8
+2026-03-23T00:28:37,/crupier/retirar,retiro_mesa,Usuario Rafael Dalzotto retiro de mesa con 175,192.168.1.18
+2026-03-23T00:28:43,/crupier/retirar,retiro_mesa,Usuario Sofia Scravaglieri retiro de mesa con 85,192.168.1.8
+2026-03-23T00:29:59,/login,login,Usuario Ramiro Belsito logueado,192.168.1.8
+2026-03-23T00:30:39,/login,login,Usuario Agustín Domínguez logueado,192.168.1.37
+2026-03-23T00:34:19,/login,login,Usuario Danna Mindiuk logueado,192.168.1.43
+2026-03-23T00:40:12,/crupier/ingresar,ingreso_mesa,Usuario Ramiro Belsito ingreso a mesa 4 con 5,192.168.1.8
+2026-03-23T00:41:34,/login,login,Usuario Manuel Dominguez logueado,192.168.1.42
+2026-03-23T00:42:04,/crupier/retirar,retiro_mesa,Usuario Ramiro Belsito retiro de mesa con 0,192.168.1.8
+2026-03-23T00:42:21,/crupier/ingresar,ingreso_mesa,Usuario Agustín Domínguez ingreso a mesa 4 con 10,192.168.1.8
+2026-03-23T00:44:32,/crupier/retirar,retiro_mesa,Usuario Agustín Domínguez retiro de mesa con 0,192.168.1.8
+2026-03-23T00:45:02,/crupier/ingresar,ingreso_mesa,Usuario Pedro Stefoni Rey Iraola ingreso a mesa 4 con 10,192.168.1.8
+2026-03-23T00:47:18,/crupier/retirar,retiro_mesa,Usuario Pedro Stefoni Rey Iraola retiro de mesa con 0,192.168.1.8
+2026-03-23T00:48:03,/crupier/ingresar,ingreso_mesa,Usuario Facundo Torres ingreso a mesa 4 con 10,192.168.1.8
+2026-03-23T00:49:14,/crupier/retirar,retiro_mesa,Usuario Facundo Torres retiro de mesa con 0,192.168.1.8
+2026-03-23T00:50:13,/crupier/ingresar,ingreso_mesa,Usuario Agustín Domínguez ingreso a mesa 4 con 5,192.168.1.8
+2026-03-23T00:52:40,/crupier/retirar,retiro_mesa,Usuario Agustín Domínguez retiro de mesa con 60,192.168.1.8
+2026-03-23T00:59:59,/crupier/ingresar,ingreso_mesa,Usuario Juan Ignacio Pla ingreso a mesa 2 con 500,192.168.1.8
+2026-03-23T01:00:45,/crupier/ingresar,ingreso_mesa,Usuario Joaquin Torino ingreso a mesa 2 con 500,192.168.1.8
+2026-03-23T01:01:17,/crupier/ingresar,ingreso_mesa,Usuario Rocco  Gastaldi ingreso a mesa 2 con 500,192.168.1.8
+2026-03-23T01:03:05,/crupier/ingresar,ingreso_mesa,Usuario Facundo Torres ingreso a mesa 1 con 500,192.168.1.21
+2026-03-23T01:03:21,/crupier/ingresar,ingreso_mesa,Usuario Nacho 🚬 Sammartino ingreso a mesa 1 con 500,192.168.1.21
+2026-03-23T01:03:54,/crupier/ingresar,ingreso_mesa,Usuario Sofia Scravaglieri ingreso a mesa 3 con 100,192.168.1.18
+2026-03-23T01:03:55,/crupier/ingresar,ingreso_mesa,Usuario Iñaki Alonso Guarrochena ingreso a mesa 1 con 500,192.168.1.21
+2026-03-23T01:04:30,/crupier/ingresar,ingreso_mesa,Usuario Danna Mindiuk ingreso a mesa 3 con 100,192.168.1.18
+2026-03-23T01:04:39,/crupier/ingresar,ingreso_mesa,Usuario Manuel Dominguez ingreso a mesa 3 con 100,192.168.1.18
+2026-03-23T01:05:23,/crupier/ingresar,ingreso_mesa,Usuario Nacho  Terra ingreso a mesa 1 con 500,192.168.1.21
+2026-03-23T01:06:00,/crupier/ingresar,ingreso_mesa,Usuario Pedro Stefoni Rey Iraola ingreso a mesa 3 con 100,192.168.1.18
+2026-03-23T01:06:26,/crupier/ingresar,ingreso_mesa,Usuario Rafael Dalzotto ingreso a mesa 3 con 100,192.168.1.18
+2026-03-23T01:08:56,/crupier/transferir,transferencia,Transferencia de 175 a usuario Sofia Scravaglieri,192.168.1.18
+2026-03-23T01:13:27,/crupier/retirar,retiro_mesa,Usuario Sofia Scravaglieri retiro de mesa con 175,192.168.1.18
+2026-03-23T01:13:34,/login,login,Usuario Manuel Dominguez logueado,192.168.1.42
+2026-03-23T01:15:16,/crupier/transferir,transferencia,Transferencia de 175 a usuario Sofia Scravaglieri,192.168.1.18
+2026-03-23T01:15:16,/crupier/retirar,retiro_mesa,Usuario Joaquin Torino retiro de mesa con 75,192.168.1.8
+2026-03-23T01:15:30,/crupier/ingresar,ingreso_mesa,Usuario Joaquin Torino ingreso a mesa 2 con 500,192.168.1.8
+2026-03-23T01:18:00,/crupier/ingresar,ingreso_mesa,Usuario Sofia Scravaglieri ingreso a mesa 3 con 100,192.168.1.18
+2026-03-23T01:18:10,/crupier/transferir,transferencia,Transferencia de -75 a usuario Sofia Scravaglieri,192.168.1.18
+2026-03-23T01:20:17,/crupier/retirar,retiro_mesa,Usuario Nacho 🚬 Sammartino retiro de mesa con 0,192.168.1.21
+2026-03-23T01:24:31,/crupier/retirar,retiro_mesa,Usuario Sofia Scravaglieri retiro de mesa con 10,192.168.1.18
+2026-03-23T01:24:38,/crupier/ingresar,ingreso_mesa,Usuario Sofia Scravaglieri ingreso a mesa 3 con 100,192.168.1.18
+2026-03-23T01:24:41,/crupier/ingresar,ingreso_mesa,Usuario Nacho 🚬 Sammartino ingreso a mesa 1 con 500,192.168.1.21
+2026-03-23T01:27:47,/crupier/retirar,retiro_mesa,Usuario Rocco  Gastaldi retiro de mesa con 0,192.168.1.8
+2026-03-23T01:29:48,/registro,registro,Usuario Matias Belsito registrado con ID 16,192.168.1.13
+2026-03-23T01:29:59,/login,login,Usuario Matias Belsito logueado,192.168.1.13
+2026-03-23T01:31:19,/crupier/ingresar,ingreso_mesa,Usuario Rocco  Gastaldi ingreso a mesa 1 con 500,192.168.1.21
+2026-03-23T01:32:58,/crupier/retirar,retiro_mesa,Usuario Sofia Scravaglieri retiro de mesa con 40,192.168.1.18
+2026-03-23T01:34:27,/login,login,Usuario Manuel Dominguez logueado,192.168.1.42
+2026-03-23T01:34:34,/crupier/transferir,transferencia,Transferencia de 350 a usuario Pedro Stefoni Rey Iraola,192.168.1.18
+2026-03-23T01:34:51,/login,login,Usuario Manuel Dominguez logueado,192.168.1.42
+2026-03-23T01:35:19,/crupier/retirar,retiro_mesa,Usuario Manuel Dominguez retiro de mesa con 90,192.168.1.18
+2026-03-23T01:35:42,/crupier/ingresar,ingreso_mesa,Usuario Agustín Domínguez ingreso a mesa 3 con 100,192.168.1.18
+2026-03-23T01:37:44,/crupier/retirar,retiro_mesa,Usuario Pedro Stefoni Rey Iraola retiro de mesa con 0,192.168.1.18
+2026-03-23T01:37:51,/crupier/ingresar,ingreso_mesa,Usuario Matias Belsito ingreso a mesa 2 con 500,192.168.1.8
+2026-03-23T01:38:16,/crupier/ingresar,ingreso_mesa,Usuario Manuel Dominguez ingreso a mesa 2 con 500,192.168.1.8
+2026-03-23T01:42:56,/login,login,Usuario Agustín Domínguez logueado,192.168.1.37
+2026-03-23T01:43:03,/login,login,Usuario Agustín Domínguez logueado,192.168.1.37
+2026-03-23T01:44:59,/crupier/retirar,retiro_mesa,Usuario Agustín Domínguez retiro de mesa con 0,192.168.1.18
+2026-03-23T01:45:47,/crupier/retirar,retiro_mesa,Usuario Danna Mindiuk retiro de mesa con 0,192.168.1.18
+2026-03-23T01:46:11,/crupier/retirar,retiro_mesa,Usuario Rafael Dalzotto retiro de mesa con 0,192.168.1.18
+2026-03-23T01:48:06,/registro,registro,Usuario Luca Bottinelli registrado con ID 17,192.168.1.18
+2026-03-23T01:48:09,/login,login,Usuario Luca Bottinelli logueado,192.168.1.18
+2026-03-23T01:48:57,/login,login,Usuario Manuel Dominguez logueado,192.168.1.42
+2026-03-23T01:49:51,/crupier/retirar,retiro_mesa,Usuario Facundo Torres retiro de mesa con 0,192.168.1.21
+2026-03-23T01:49:54,/crupier/retirar,retiro_mesa,Usuario Manuel Dominguez retiro de mesa con 750,192.168.1.18
+2026-03-23T01:50:00,/crupier/ingresar,ingreso_mesa,Usuario Facundo Torres ingreso a mesa 1 con 500,192.168.1.21
+2026-03-23T01:50:12,/crupier/ingresar,ingreso_mesa,Usuario Luca Bottinelli ingreso a mesa 2 con 500,192.168.1.18
+2026-03-23T01:50:56,/crupier/retirar,retiro_mesa,Usuario Iñaki Alonso Guarrochena retiro de mesa con 0,192.168.1.21
+2026-03-23T01:51:13,/crupier/ingresar,ingreso_mesa,Usuario Iñaki Alonso Guarrochena ingreso a mesa 1 con 500,192.168.1.21
+2026-03-23T01:54:45,/crupier/retirar,retiro_mesa,Usuario Juan Ignacio Pla retiro de mesa con 600,192.168.1.8
+2026-03-23T01:55:01,/crupier/ingresar,ingreso_mesa,Usuario Manuel Dominguez ingreso a mesa 2 con 500,192.168.1.8
+2026-03-23T01:55:47,/crupier/retirar,retiro_mesa,Usuario Joaquin Torino retiro de mesa con 375,192.168.1.18
+2026-03-23T01:55:49,/crupier/retirar,retiro_mesa,Usuario Iñaki Alonso Guarrochena retiro de mesa con 0,192.168.1.21
+2026-03-23T01:56:00,/crupier/retirar,retiro_mesa,Usuario Rocco  Gastaldi retiro de mesa con 0,192.168.1.21
+2026-03-23T01:56:00,/login,login,Usuario Juan Ignacio Pla logueado,192.168.1.51
+2026-03-23T01:57:26,/crupier/retirar,retiro_mesa,Usuario Nacho 🚬 Sammartino retiro de mesa con 0,192.168.1.21
+2026-03-23T01:57:39,/crupier/ingresar,ingreso_mesa,Usuario Nacho 🚬 Sammartino ingreso a mesa 1 con 1125,192.168.1.21
+2026-03-23T01:58:58,/crupier/retirar,retiro_mesa,Usuario Facundo Torres retiro de mesa con 2000,192.168.1.21
+2026-03-23T01:59:28,/crupier/ingresar,ingreso_mesa,Usuario Agustín Domínguez ingreso a mesa 2 con 500,192.168.1.18
+2026-03-23T02:01:49,/crupier/ingresar,ingreso_mesa,Usuario Iñaki Alonso Guarrochena ingreso a mesa 1 con 1500,192.168.1.21
+2026-03-23T02:03:32,/crupier/ingresar,ingreso_mesa,Usuario Rafael Dalzotto ingreso a mesa 1 con 1500,192.168.1.21
+2026-03-23T02:25:46,/login,login,Usuario Manuel Dominguez logueado,192.168.1.42
+2026-03-23T02:26:12,/crupier/retirar,retiro_mesa,Usuario Manuel Dominguez retiro de mesa con 300,192.168.1.18
+2026-03-23T02:30:37,/crupier/retirar,retiro_mesa,Usuario Agustín Domínguez retiro de mesa con 275,192.168.1.18
+2026-03-23T02:39:45,/crupier/retirar,retiro_mesa,Usuario Luca Bottinelli retiro de mesa con 0,192.168.1.18
+2026-03-23T02:40:01,/crupier/retirar,retiro_mesa,Usuario Matias Belsito retiro de mesa con 350,192.168.1.18
+2026-03-23T02:46:19,/crupier/retirar,retiro_mesa,Usuario Nacho 🚬 Sammartino retiro de mesa con 0,192.168.1.36
+2026-03-23T03:01:58,/crupier/retirar,retiro_mesa,Usuario Nacho  Terra retiro de mesa con 3100,192.168.1.36
+2026-03-23T03:03:05,/crupier/retirar,retiro_mesa,Usuario Rafael Dalzotto retiro de mesa con 2525,192.168.1.36
+2026-03-23T03:03:18,/crupier/retirar,retiro_mesa,Usuario Iñaki Alonso Guarrochena retiro de mesa con 0,192.168.1.36
+2026-03-23T03:07:42,/login,login,Usuario Ramiro Belsito logueado,192.168.1.15
