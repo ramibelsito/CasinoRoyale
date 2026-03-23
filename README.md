@@ -42,7 +42,7 @@ Aplicación web para registrar acciones, ganancias y pérdidas de usuarios en un
 
 2. Instalar dependencias:
    ```bash
-   pip install fastapi uvicorn
+   pip install fastapi uvicorn "uvicorn[standard]"
    ```
 
 3. Ejecutar servidor:
